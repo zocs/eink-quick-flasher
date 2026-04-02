@@ -4,6 +4,30 @@ import sys
 import os
 from threading import Thread, Event
 
+def _get_python_executable():
+    """Get the correct Python executable, handling PyInstaller bundles."""
+    if getattr(sys, 'frozen', False):
+        # Running as PyInstaller bundle — sys.executable points to the exe itself
+        # Try to find system python or use esptool directly
+        for candidate in ['python', 'python3', 'py']:
+            try:
+                r = subprocess.run([candidate, '--version'], capture_output=True, timeout=3)
+                if r.returncode == 0:
+                    return candidate
+            except (FileNotFoundError, subprocess.TimeoutExpired):
+                continue
+        # Fallback: try calling esptool as a standalone command
+        return None
+    return sys.executable
+
+def _build_esptool_cmd(args):
+    """Build esptool command, handling PyInstaller bundles."""
+    py = _get_python_executable()
+    if py:
+        return [py, '-m', 'esptool'] + args
+    # Fallback: try esptool.exe directly (if installed via pip)
+    return ['esptool'] + args
+
 def list_ports():
     ports = []
     for p in serial.tools.list_ports.comports():
@@ -13,7 +37,7 @@ def list_ports():
 
 def get_flash_info(port):
     try:
-        r = subprocess.run([sys.executable, "-m", "esptool", "--port", port, "--after", "no-reset", "flash-id"],
+        r = subprocess.run(_build_esptool_cmd(["--port", port, "--after", "no-reset", "flash-id"]),
                           capture_output=True, text=True, timeout=15)
         return {"output": r.stdout + r.stderr, "error": None if r.returncode == 0 else r.stderr}
     except subprocess.TimeoutExpired:
@@ -64,8 +88,8 @@ def _run_with_progress(cmd, cancel_event, progress_callback, status_label):
 
 def read_flash(port, baud, offset, size, output_file, cancel_event=None, progress_callback=None):
     try:
-        cmd = [sys.executable, "-m", "esptool", "--port", port, "--baud", str(baud),
-               "--after", "no-reset", "read-flash", hex(offset), hex(size), output_file]
+        cmd = _build_esptool_cmd(["--port", port, "--baud", str(baud),
+               "--after", "no-reset", "read-flash", hex(offset), hex(size), output_file])
         if progress_callback:
             progress_callback(0, "connecting")
         ok, code = _run_with_progress(cmd, cancel_event, progress_callback, "extracting")
@@ -81,8 +105,8 @@ def read_flash(port, baud, offset, size, output_file, cancel_event=None, progres
 
 def write_flash(port, baud, address_file_pairs, cancel_event=None, progress_callback=None):
     try:
-        args = [sys.executable, "-m", "esptool", "--port", port, "--baud", str(baud),
-                "--after", "no-reset", "write-flash"]
+        args = _build_esptool_cmd(["--port", port, "--baud", str(baud),
+                "--after", "no-reset", "write-flash"])
         for addr, fp in address_file_pairs:
             args.extend([hex(addr), fp])
         if progress_callback:
