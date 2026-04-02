@@ -55,21 +55,24 @@ ESP32-C3 墨水屏阅读器快速备份与刷机工具
 
 ### CrossPoint 固件
 
-X3 和 X4 刷 CrossPoint 使用相同的分区布局：
+X3 和 X4 刷 CrossPoint 使用相同的分区布局（经验证）：
 
 | 分区 | 偏移 | 大小 |
 |---|---|---|
-| Bootloader | 0x0 | 18KB |
-| Partition Table | 0x8000 | 3KB |
-| App0 | 0x10000 | 6.25MB |
-| App1 | 0x650000 | 6.25MB |
-| SPIFFS | 0xC90000 | 3.37MB |
+| nvs | 0x9000 | 20KB |
+| otadata | 0xE000 | 8KB |
+| app0 | 0x10000 | 6.25MB |
+| app1 | 0x650000 | 6.25MB |
+| spiffs | 0xC90000 | 3.37MB |
+| coredump | 0xFF0000 | 64KB |
 
-首次刷入需完整写入，因为原厂分区布局不同。之后可用 OTA 更新。
+首次刷入需完整写入（bootloader + 分区表 + app），因为原厂分区布局与 CrossPoint 不同。之后可用 OTA 更新。
 
 ### 官方固件
 
-官方固件为完整 16MB 镜像，直接从 0x0 写入即可，无需关心分区布局。
+`_full` 为官方全备份固件（16MB），包含 bootloader + 分区表 + 应用 + 数据，直接从 0x0 写入即可，无需关心分区布局。
+
+`_ota` 为官方 OTA 固件（~6MB），仅包含应用分区，需配合原厂分区表使用（即设备当前运行的是官方固件）。
 
 ## 从源码构建
 

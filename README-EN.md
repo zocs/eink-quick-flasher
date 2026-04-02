@@ -51,19 +51,22 @@ Download `EInk-Quick-Flasher.exe` from [Releases](../../releases). No installati
 
 ## Partition Table
 
-Both X3 and X4 use the same partition layout for CrossPoint:
+Both X3 and X4 use the same partition layout for CrossPoint (verified):
 
 | Partition | Offset | Size |
 |---|---|---|
-| Bootloader | 0x0 | 18KB |
-| Partition Table | 0x8000 | 3KB |
-| App0 | 0x10000 | 6.25MB |
-| App1 | 0x650000 | 6.25MB |
-| SPIFFS | 0xC90000 | 3.37MB |
+| nvs | 0x9000 | 20KB |
+| otadata | 0xE000 | 8KB |
+| app0 | 0x10000 | 6.25MB |
+| app1 | 0x650000 | 6.25MB |
+| spiffs | 0xC90000 | 3.37MB |
+| coredump | 0xFF0000 | 64KB |
 
-First-time CrossPoint flash requires full write. Subsequent updates can use OTA.
+First-time CrossPoint flash requires full write (bootloader + partition table + app). Subsequent updates can use OTA.
 
-Official firmware is a full 16MB image. Use "Restore" mode, no partition concerns.
+`_full` files are official full backups (16MB) containing bootloader + partition table + app + data. Write from address 0x0.
+
+`_ota` files are official OTA firmware (~6MB) containing app partition only. Requires original partition table (device must be running official firmware).
 
 ## Build from source
 
