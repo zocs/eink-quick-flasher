@@ -50,7 +50,7 @@ class Worker(QThread):
 class Win(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("X3 Flasher")
+        self.setWindowTitle("EInk Quick Flasher")
         self.setMinimumSize(620, 700)
         self.bak_w = self.flash_w = None
         self.bak_ev = Event()
@@ -67,11 +67,11 @@ class Win(QMainWindow):
         lay.setContentsMargins(16, 16, 16, 16)
 
         # Title
-        title = QLabel("X3 Flasher")
+        title = QLabel("EInk Quick Flasher")
         title.setStyleSheet("font-size: 22px; font-weight: bold; color: #E43F5A; padding: 4px 0;")
         lay.addWidget(title)
 
-        subtitle = QLabel("ESP32-C3 阅星瞳 X3 备份与刷机工具")
+        subtitle = QLabel("ESP32-C3 墨水屏阅读器备份与刷机工具  |  X3 / X4")
         subtitle.setStyleSheet("font-size: 12px; color: #999; padding: 0 0 8px 0;")
         lay.addWidget(subtitle)
 

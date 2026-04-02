@@ -1,4 +1,4 @@
-name: Build X3 Flasher
+name: Build EInk Quick Flasher
 
 on:
   push:
@@ -21,16 +21,16 @@ jobs:
 
       - name: Build exe
         run: |
-          pyinstaller --onefile --windowed --name "X3-Flasher" --hidden-import esptool --hidden-import serial --collect-all esptool main.py
+          pyinstaller --onefile --windowed --name "EInk-Quick-Flasher" --hidden-import esptool --hidden-import serial --collect-all esptool main.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: X3-Flasher
-          path: dist/X3-Flasher.exe
+          name: EInk-Quick-Flasher
+          path: dist/EInk-Quick-Flasher.exe
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/X3-Flasher.exe
+          files: dist/EInk-Quick-Flasher.exe

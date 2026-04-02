@@ -1,6 +1,8 @@
-# X3 / X4 Flasher
+# EInk Quick Flasher
 
-xteink 阅星瞳 X3 / X4 备份与刷机工具 | Backup & Flash Tool
+ESP32-C3 墨水屏阅读器备份与刷机工具 | E-Ink Reader Backup & Flash Tool
+
+支持设备：xteink 阅星瞳 X3 / X4（后续如有新品将考虑增加支持）
 
 [🇺🇸 English](#english) | [📖 刷机指南](X3-FLASHER-GUIDE.md)
 
@@ -19,7 +21,7 @@ xteink 阅星瞳 X3 / X4 备份与刷机工具 | Backup & Flash Tool
 
 ### 下载
 
-从 [Releases](../../releases) 下载 `X3-Flasher.exe`，双击运行。
+从 [Releases](../../releases) 下载 `EInk-Quick-Flasher.exe`，双击运行。
 
 ### 连接设备
 
@@ -72,7 +74,7 @@ python main.py
 
 ```powershell
 pip install pyinstaller
-pyinstaller --onefile --windowed --name "X3-Flasher" --hidden-import esptool --hidden-import serial --collect-all esptool main.py
+pyinstaller --onefile --windowed --name "EInk-Quick-Flasher" --hidden-import esptool --hidden-import serial --collect-all esptool main.py
 ```
 
 ## 相关项目
@@ -82,7 +84,7 @@ pyinstaller --onefile --windowed --name "X3-Flasher" --hidden-import esptool --h
 
 ## 免责声明
 
-本工具仅供学习交流和个人使用，基于友好分享、便捷刷机和开源精神制作。使用本工具刷写设备固件存在风险，包括但不限于设备无法启动、数据丢失等。使用者需自行评估风险并承担使用本工具导致的一切后果。开发者不对因使用本工具造成的任何损失负责。
+本工具仅供学习交流和个人使用，基于友好分享、便捷刷机和开源精神制作。本项目为非盈利项目，旨在方便众多用户进行固件刷写，免费分享。使用本工具刷写设备固件存在风险，包括但不限于设备无法启动、数据丢失等。使用者需自行评估风险并承担使用本工具导致的一切后果。开发者不对因使用本工具造成的任何损失负责。
 
 ---
 
@@ -90,7 +92,9 @@ pyinstaller --onefile --windowed --name "X3-Flasher" --hidden-import esptool --h
 
 ## English
 
-A backup and flashing tool for xteink X3 / X4 e-readers (ESP32-C3).
+A backup and flashing tool for ESP32-C3 e-ink readers.
+
+Supported devices: xteink X3 / X4 (more devices may be supported in the future)
 
 ### Features
 
@@ -105,7 +109,7 @@ A backup and flashing tool for xteink X3 / X4 e-readers (ESP32-C3).
 
 ### Usage
 
-Download `X3-Flasher.exe` from [Releases](../../releases). No installation needed.
+Download `EInk-Quick-Flasher.exe` from [Releases](../../releases). No installation needed.
 
 **Connection:**
 - **X3**: Hold power button to turn on → connect magnetic pogo cable → COM port detected
@@ -132,7 +136,7 @@ python main.py
 
 ### Disclaimer
 
-This tool is provided for educational and personal use only, created with the spirit of friendly sharing, convenient flashing, and open source. Flashing device firmware carries risks including but not limited to device failure and data loss. Users should evaluate the risks and bear all consequences of using this tool. The developer is not responsible for any damage caused by the use of this tool.
+This tool is provided for educational and personal use only, created with the spirit of friendly sharing, convenient flashing, and open source. This is a non-profit project intended to make firmware flashing more accessible for users, shared free of charge. Flashing device firmware carries risks including but not limited to device failure and data loss. Users should evaluate the risks and bear all consequences of using this tool. The developer is not responsible for any damage caused by the use of this tool.
 
 ## License
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""X3 Flasher - ESP32 阅星瞳 X3 备份刷机工具"""
+"""EInk Quick Flasher - ESP32 墨水屏阅读器备份刷机工具"""
 
 import sys
 from PyQt5.QtWidgets import QApplication
