@@ -564,11 +564,11 @@ class App(tk.Tk):
     def _bak_done(self, ok, msg):
         self.bak_btn.state(["!disabled"])
         self.bak_cancel_btn.state(["disabled"])
-        self.bak_pb_text.config(text=self._t("pb_done") if ok else msg)
         self.bak_pb_var.set(100 if ok else 0)
         if ok:
             self._log(self._t("bak_success").format(msg=msg))
         else:
+            self.bak_pb_text.config(text=f"❌ {msg}")
             self._log(f"❌ {msg}")
 
     # ── Flash ──────────────────────────────────────────────────
@@ -654,11 +654,11 @@ class App(tk.Tk):
     def _flash_done(self, ok, msg):
         self.flash_btn.state(["!disabled"])
         self.flash_cancel_btn.state(["disabled"])
-        self.flash_pb_text.config(text=self._t("pb_done") if ok else msg)
         self.flash_pb_var.set(100 if ok else 0)
         if ok:
             self._log(self._t("flash_success"))
         else:
+            self.flash_pb_text.config(text=f"❌ {msg}")
             self._log(f"❌ {msg}")
 
 
