@@ -45,9 +45,11 @@ ESP32-C3 墨水屏阅读器快速备份与刷机工具
 
 | 文件 | 说明 |
 |---|---|
-| x3_cn_v5.2.13_stock.bin | V5.2.13（默认中文） |
-| x3_en_v5.2.13_stock.bin | V5.2.13（默认英文） |
-| x3_en_v1.0.7_stock.bin | V1.0.7（默认英文） |
+| x3_cn_v5.2.13_stock.bin | X3 V5.2.13（默认中文，完整备份 16MB） |
+| x3_en_v5.2.13_stock.bin | X3 V5.2.13（默认英文，完整备份 16MB） |
+| x3_en_v1.0.7_stock.bin | X3 V1.0.7（默认英文，完整备份 16MB） |
+| x4_cn_v5.2.13_stock.bin | X4 V5.2.13（默认中文，OTA 6MB） |
+| x4_en_v5.1.6_stock.bin | X4 V5.1.6（默认英文，OTA 6MB） |
 
 ## 分区表
 
