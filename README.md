@@ -84,6 +84,7 @@ pyinstaller --onefile --windowed --name "EInk-Quick-Flasher" --hidden-import esp
 ## 相关项目
 
 - [CrossPoint Reader](https://github.com/crosspoint-reader/crosspoint-reader) - 开源墨水屏阅读器固件
+- [crosspoint-chinesetype](https://github.com/icannotttt/crosspoint-chinesetype) - CrossPoint 中文汉化版
 - [xteink-flasher](https://github.com/crosspoint-reader/xteink-flasher) - 网页版刷机工具
 
 ## 免责声明
