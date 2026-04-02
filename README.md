@@ -55,7 +55,7 @@ ESP32-C3 墨水屏阅读器快速备份与刷机工具
 
 ### CrossPoint 固件
 
-X3 和 X4 刷 CrossPoint 使用相同的分区布局（经验证）：
+X3 和 X4 刷 CrossPoint 时，使用 CrossPoint 自带的分区表（两者相同，已验证）：
 
 | 分区 | 偏移 | 大小 |
 |---|---|---|

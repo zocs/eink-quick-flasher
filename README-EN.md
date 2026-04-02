@@ -51,7 +51,7 @@ Download `EInk-Quick-Flasher.exe` from [Releases](../../releases). No installati
 
 ## Partition Table
 
-Both X3 and X4 use the same partition layout for CrossPoint (verified):
+When flashing CrossPoint, both X3 and X4 use the same partition layout (provided by CrossPoint, verified):
 
 | Partition | Offset | Size |
 |---|---|---|
