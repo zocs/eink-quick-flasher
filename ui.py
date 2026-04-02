@@ -323,10 +323,10 @@ class App(tk.Tk):
         self.bak_pb_var = tk.DoubleVar(value=0)
         self.bak_pb = ttk.Progressbar(self.bak_frame, variable=self.bak_pb_var,
                                         maximum=100, style="Accent.Horizontal.TProgressbar")
-        self.bak_pb.grid(row=2, column=0, columnspan=5, padx=12, pady=(4, 10), sticky="ew")
+        self.bak_pb.grid(row=2, column=0, columnspan=5, padx=12, pady=(4, 0), sticky="ew")
         self.bak_pb_text = tk.Label(self.bak_frame, text=self.L["ready"],
                                       font=FONT_STATUS, bg=CARD, fg=TEXT_DIM)
-        self.bak_pb_text.grid(row=2, column=0, columnspan=5, padx=12, pady=(4, 10), sticky="")
+        self.bak_pb_text.grid(row=3, column=0, columnspan=5, padx=12, pady=(0, 10), sticky="")
         self.bak_start_time = None
 
         # ── Flash group ──
@@ -377,10 +377,10 @@ class App(tk.Tk):
         self.flash_pb_var = tk.DoubleVar(value=0)
         self.flash_pb = ttk.Progressbar(self.flash_frame, variable=self.flash_pb_var,
                                           maximum=100, style="Accent.Horizontal.TProgressbar")
-        self.flash_pb.grid(row=5, column=0, columnspan=5, padx=12, pady=(0, 10), sticky="ew")
+        self.flash_pb.grid(row=5, column=0, columnspan=5, padx=12, pady=(0, 0), sticky="ew")
         self.flash_pb_text = tk.Label(self.flash_frame, text=self.L["ready"],
                                         font=FONT_STATUS, bg=CARD, fg=TEXT_DIM)
-        self.flash_pb_text.grid(row=5, column=0, columnspan=5, padx=12, pady=(0, 10), sticky="")
+        self.flash_pb_text.grid(row=6, column=0, columnspan=5, padx=12, pady=(0, 10), sticky="")
         self.flash_start_time = None
 
         # ── Log area ──
