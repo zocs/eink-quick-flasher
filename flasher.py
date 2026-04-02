@@ -1,76 +1,69 @@
-"""
-ESP32 X3 Flasher - Core esptool wrapper
-Uses esptool.main() via sys.argv for maximum compatibility.
-Falls back to subprocess if import fails.
-"""
-
 import serial.tools.list_ports
+import subprocess
 import sys
 import os
 
-
 def list_ports():
-    """List available serial ports."""
     ports = []
     for p in serial.tools.list_ports.comports():
         if "USB" in p.description or "COM" in p.device:
-            ports.append({
-                "device": p.device,
-                "description": p.description,
-            })
+            ports.append({"device": p.device, "description": p.description})
     return ports
 
-
-def _run_esptool(args):
-    """Run esptool with args, works both as script and as exe."""
-    old_argv = sys.argv
-    try:
-        import esptool
-        sys.argv = ["esptool"] + args
-        esptool.main()
-        sys.argv = old_argv
-        return True, ""
-    except SystemExit as e:
-        sys.argv = old_argv
-        return e.code == 0, "" if e.code == 0 else f"exit code {e.code}"
-    except Exception as e:
-        sys.argv = old_argv
-        return False, str(e)
-
-
 def get_flash_info(port):
-    """Get chip type and flash size."""
-    ok, err = _run_esptool(["--port", port, "--after", "no-reset", "flash-id"])
-    return {"error": None if ok else (err or "failed")}
-
+    try:
+        r = subprocess.run([sys.executable, "-m", "esptool", "--port", port, "--after", "no-reset", "flash-id"],
+                          capture_output=True, text=True, timeout=15)
+        return {"output": r.stdout + r.stderr, "error": None if r.returncode == 0 else r.stderr}
+    except subprocess.TimeoutExpired:
+        return {"output": "", "error": "timeout"}
+    except Exception as e:
+        return {"output": "", "error": str(e)}
 
 def read_flash(port, baud, offset, size, output_file, cancel_event=None, progress_callback=None):
-    """Read flash to file with cancel support."""
-    # cancel_event support via subprocess is limited;
-    # for now, use esptool.main() which blocks until done
-    if progress_callback:
-        progress_callback(0, "连接中...")
-    ok, err = _run_esptool([
-        "--port", port, "--baud", str(baud), "--after", "no-reset",
-        "read-flash", hex(offset), hex(size), output_file,
-    ])
-    if ok:
-        if progress_callback:
-            progress_callback(100, "完成")
-        return True, f"已保存: {output_file}"
-    return False, f"失败: {err}"
-
+    try:
+        cmd = [sys.executable, "-m", "esptool", "--port", port, "--baud", str(baud),
+               "--after", "no-reset", "read-flash", hex(offset), hex(size), output_file]
+        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+        for line in proc.stdout:
+            if cancel_event and cancel_event.is_set():
+                proc.terminate(); proc.wait(timeout=5)
+                try: os.remove(output_file)
+                except: pass
+                return False, "cancelled"
+            if "%" in line and "bytes" in line:
+                try:
+                    pct = float(line.split("%")[0].split()[-1])
+                    if progress_callback: progress_callback(pct, "extracting")
+                except: pass
+        proc.wait()
+        if proc.returncode == 0:
+            if progress_callback: progress_callback(100, "done")
+            return True, f"saved: {output_file}"
+        return False, f"failed (code {proc.returncode})"
+    except Exception as e:
+        return False, str(e)
 
 def write_flash(port, baud, address_file_pairs, cancel_event=None, progress_callback=None):
-    """Write flash from files."""
-    args = ["--port", port, "--baud", str(baud), "--after", "no-reset", "write-flash"]
-    for addr, filepath in address_file_pairs:
-        args.extend([hex(addr), filepath])
-    if progress_callback:
-        progress_callback(0, "连接中...")
-    ok, err = _run_esptool(args)
-    if ok:
-        if progress_callback:
-            progress_callback(100, "完成")
-        return True, "刷入完成"
-    return False, f"失败: {err}"
+    try:
+        args = [sys.executable, "-m", "esptool", "--port", port, "--baud", str(baud),
+                "--after", "no-reset", "write-flash"]
+        for addr, fp in address_file_pairs:
+            args.extend([hex(addr), fp])
+        proc = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
+        for line in proc.stdout:
+            if cancel_event and cancel_event.is_set():
+                proc.terminate(); proc.wait(timeout=5)
+                return False, "cancelled"
+            if "%" in line and "bytes" in line:
+                try:
+                    pct = float(line.split("%")[0].split()[-1])
+                    if progress_callback: progress_callback(pct, "writing")
+                except: pass
+        proc.wait()
+        if proc.returncode == 0:
+            if progress_callback: progress_callback(100, "done")
+            return True, "flash complete"
+        return False, f"failed (code {proc.returncode})"
+    except Exception as e:
+        return False, str(e)

@@ -62,6 +62,7 @@ LANG = {
         "confirm_backup_title": "确认备份",
         "confirm_backup_msg": "将提取 {sz} Flash 内容到：\n{path}\n\n请保持数据线连接。\n\n确认开始？",
         "log_cancelled": "已取消",
+        "cancel_warn": "刷入过程中取消可能导致 bootloader 损坏，设备变砖。\n\n确认取消？",
         "flash_group": "刷入固件",
         "mode_full": "完整写入 (自动检测 bootloader.bin + partitions.bin + 固件文件)",
         "mode_ota": "OTA 更新 (仅写应用)",
@@ -115,6 +116,7 @@ LANG = {
         "confirm_backup_title": "Confirm Backup",
         "confirm_backup_msg": "Extract {sz} Flash content to:\n{path}\n\nPlease keep the data cable connected.\n\nConfirm to start?",
         "log_cancelled": "Cancelled",
+        "cancel_warn": "Cancelling during flash may damage the bootloader and brick the device.\n\nConfirm cancel?",
         "flash_group": "Flash Firmware",
         "mode_full": "Full Write (auto-detect bootloader.bin + partitions.bin + firmware)",
         "mode_ota": "OTA Update (flash app only)",
@@ -361,7 +363,7 @@ class App(tk.Tk):
 
         self.flash_cancel_btn = ttk.Button(self.flash_frame, text=self.L["cancel"],
                                              style="Outline.TButton",
-                                             command=lambda: self.flash_cancel.set())
+                                             command=self._confirm_cancel_flash)
         self.flash_cancel_btn.grid(row=4, column=4, padx=(4, 12), pady=(4, 10))
         self.flash_cancel_btn.state(["disabled"])
 
@@ -521,10 +523,18 @@ class App(tk.Tk):
         baud = int(self.baud_var.get())
 
         def run():
+            status_map = {
+                "connecting": self.L["status_connecting"],
+                "extracting": self.L["extracting"],
+                "writing": self.L["writing_status"],
+                "done": self.L["pb_done"],
+                "cancelled": self.L["log_cancelled"],
+            }
             def progress(pct, status):
+                translated = status_map.get(status, status)
                 self.after(0, lambda: self.bak_pb_var.set(pct))
                 self.after(0, lambda: self.bak_pb_text.config(
-                    text=f"{pct:.0f}%  -  {status}"))
+                    text=f"{pct:.0f}%  -  {translated}"))
             try:
                 ok, msg = flasher.read_flash(port, baud, 0, size, path,
                                               self.bak_cancel, progress)
@@ -588,10 +598,18 @@ class App(tk.Tk):
         self.flash_cancel_btn.state(["!disabled"])
 
         def run():
+            status_map = {
+                "connecting": self.L["status_connecting"],
+                "extracting": self.L["extracting"],
+                "writing": self.L["writing_status"],
+                "done": self.L["pb_done"],
+                "cancelled": self.L["log_cancelled"],
+            }
             def progress(pct, status):
+                translated = status_map.get(status, status)
                 self.after(0, lambda: self.flash_pb_var.set(pct))
                 self.after(0, lambda: self.flash_pb_text.config(
-                    text=f"{pct:.0f}%  -  {status}"))
+                    text=f"{pct:.0f}%  -  {translated}"))
             try:
                 ok, msg = flasher.write_flash(port, baud, pairs,
                                                 self.flash_cancel, progress)
@@ -601,6 +619,13 @@ class App(tk.Tk):
 
         self._flash_thread = Thread(target=run, daemon=True)
         self._flash_thread.start()
+
+    def _confirm_cancel_flash(self):
+        warn = self.L.get("cancel_warn",
+            "Cancelling during flash may damage the bootloader.\nAre you sure?")
+        if messagebox.askyesno("Warning" if self.lang == "en" else "警告", warn):
+            self.flash_cancel.set()
+            self._log(self.L["log_cancelled"])
 
     def _flash_done(self, ok, msg):
         self.flash_btn.state(["!disabled"])
