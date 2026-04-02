@@ -2,7 +2,7 @@
 
 ESP32-C3 墨水屏阅读器备份与刷机工具 | E-Ink Reader Backup & Flash Tool
 
-支持设备：xteink 阅星瞳 X3 / X4（后续如有新品将考虑增加支持）
+支持设备：xteink 阅星瞳 X3、X4
 
 [🇺🇸 English](#english) | [📖 刷机指南](X3-FLASHER-GUIDE.md)
 
@@ -94,7 +94,7 @@ pyinstaller --onefile --windowed --name "EInk-Quick-Flasher" --hidden-import esp
 
 A backup and flashing tool for ESP32-C3 e-ink readers.
 
-Supported devices: xteink X3 / X4 (more devices may be supported in the future)
+Supported devices: xteink X3, X4
 
 ### Features
 
