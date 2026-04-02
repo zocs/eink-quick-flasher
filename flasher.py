@@ -56,12 +56,18 @@ def _run_with_progress(cmd, cancel_event, progress_callback, status_label):
     done.set()
     t_out.join(timeout=2)
     t_err.join(timeout=2)
+
+    if proc.returncode == 0 and progress_callback:
+        progress_callback(100, "done")
+
     return proc.returncode == 0, proc.returncode
 
 def read_flash(port, baud, offset, size, output_file, cancel_event=None, progress_callback=None):
     try:
         cmd = [sys.executable, "-m", "esptool", "--port", port, "--baud", str(baud),
                "--after", "no-reset", "read-flash", hex(offset), hex(size), output_file]
+        if progress_callback:
+            progress_callback(0, "connecting")
         ok, code = _run_with_progress(cmd, cancel_event, progress_callback, "extracting")
         if not ok:
             if code == "cancelled":
@@ -69,8 +75,6 @@ def read_flash(port, baud, offset, size, output_file, cancel_event=None, progres
                 except: pass
                 return False, "cancelled"
             return False, f"failed (code {code})"
-        if progress_callback:
-            progress_callback(100, "done")
         return True, f"saved: {output_file}"
     except Exception as e:
         return False, str(e)
@@ -81,13 +85,13 @@ def write_flash(port, baud, address_file_pairs, cancel_event=None, progress_call
                 "--after", "no-reset", "write-flash"]
         for addr, fp in address_file_pairs:
             args.extend([hex(addr), fp])
+        if progress_callback:
+            progress_callback(0, "connecting")
         ok, code = _run_with_progress(args, cancel_event, progress_callback, "writing")
         if not ok:
             if code == "cancelled":
                 return False, "cancelled"
             return False, f"failed (code {code})"
-        if progress_callback:
-            progress_callback(100, "done")
         return True, "flash complete"
     except Exception as e:
         return False, str(e)
