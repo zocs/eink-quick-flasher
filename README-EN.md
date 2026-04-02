@@ -43,11 +43,11 @@ Download `EInk-Quick-Flasher.exe` from [Releases](../../releases). No installati
 
 | File | Description |
 |---|---|
-| x3_cn_v5.2.13_stock.bin | X3 V5.2.13 (Chinese, full backup 16MB) |
-| x3_en_v5.2.13_stock.bin | X3 V5.2.13 (English, full backup 16MB) |
-| x3_en_v1.0.7_stock.bin | X3 V1.0.7 (English, full backup 16MB) |
-| x4_cn_v5.2.13_stock.bin | X4 V5.2.13 (Chinese, OTA 6MB) |
-| x4_en_v5.1.6_stock.bin | X4 V5.1.6 (English, OTA 6MB) |
+| x3_cn_v5.2.13_full.bin | X3 V5.2.13 (Chinese, full backup 16MB) |
+| x3_en_v5.2.13_full.bin | X3 V5.2.13 (English, full backup 16MB) |
+| x3_en_v1.0.7_full.bin | X3 V1.0.7 (English, full backup 16MB) |
+| x4_cn_v5.2.13_ota.bin | X4 V5.2.13 (Chinese, OTA 6MB) |
+| x4_en_v5.1.6_ota.bin | X4 V5.1.6 (English, OTA 6MB) |
 
 ## Partition Table
 
