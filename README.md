@@ -39,7 +39,13 @@ ESP32-C3 墨水屏阅读器备份与刷机工具 | E-Ink Reader Backup & Flash T
 
 - **完整写入**：bootloader.bin、partitions.bin、firmware.bin 需在同一目录，选择 firmware.bin 自动检测
 - **OTA 更新**：仅更新应用分区，选择 firmware.bin
-- **恢复原厂**：选择完整备份文件。本仓库 `firmware/` 目录提供官方固件备份（x3_cn_v5.2.13_stock.bin / x3_en_v5.2.13_stock.bin / x3_en_v1.0.7_stock.bin）
+- **恢复原厂**：选择完整备份文件。本仓库 `firmware/` 目录提供官方固件备份。CN/EN 标注仅为默认界面语言不同，固件内容完全一致，刷入后可在设置中切换语言。
+
+| 文件 | 说明 |
+|---|---|
+| x3_cn_v5.2.13_stock.bin | V5.2.13（默认中文） |
+| x3_en_v5.2.13_stock.bin | V5.2.13（默认英文） |
+| x3_en_v1.0.7_stock.bin | V1.0.7（默认英文） |
 
 ## X3 / X4 分区表
 
@@ -121,7 +127,7 @@ Download `EInk-Quick-Flasher.exe` from [Releases](../../releases). No installati
 
 Both X3 and X4 use the same partition layout for CrossPoint firmware. The flasher commands are identical for both devices.
 
-Official firmware is a full 16MB image (includes bootloader + partition table + app + data). Use "Restore" mode and select the backup file.
+Official firmware is a full 16MB image (includes bootloader + partition table + app + data). Use "Restore" mode and select the backup file. Stock firmware files are available in the `firmware/` directory. CN/EN designation only indicates the default UI language — the firmware content is identical and language can be switched in settings after flashing.
 
 ### Build from source
 
