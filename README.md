@@ -10,13 +10,13 @@ ESP32-C3 墨水屏阅读器快速备份与刷机工具
 
 ## 特点
 
-- 🚀 调用 esptool 子进程，备份刷机速度与命令行一致
+- 🚀 备份和刷机均使用 esptool 子进程，速度与命令行一致
 - 📦 单文件 exe，无需安装 Python 或其他依赖
 - 🔌 自动检测 COM 口，读取设备信息
 - ⚡ 支持 X3 和 X4 设备
 - 📦 Flash 备份（1MB / 4MB / 8MB / 16MB），支持终止
 - ⚡ 固件刷入（完整写入 / OTA 更新 / 恢复原厂），带风险确认
-- 📋 实时日志，进度条显示
+- 📋 实时进度条，备份和刷入均显示进度
 - 🌐 中英文双语界面，一键切换
 - 🎨 现代浅色主题
 
@@ -92,7 +92,7 @@ pyinstaller --onefile --windowed --name "EInk-Quick-Flasher" --hidden-import esp
 
 - [CrossPoint Reader](https://github.com/crosspoint-reader/crosspoint-reader) - 开源墨水屏阅读器固件
 - [CrossPoint Reader (X3 测试版)](https://github.com/itsthisjustin/crosspoint-reader) - itsthisjustin 的 X3 移植分支（测试中）
-- [crosspoint-chinesetype](https://github.com/icannotttt/crosspoint-chinesetype) - CrossPoint 中文汉化版
+- [crosspoint-chinesetype](https://github.com/icannotttt/crosspoint-chinesetype) - CrossPoint 中文汉化版（含 OTA 固件下载）
 - [xteink-flasher](https://github.com/crosspoint-reader/xteink-flasher) - 网页版刷机工具
 
 ## 免责声明

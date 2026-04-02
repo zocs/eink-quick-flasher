@@ -10,13 +10,13 @@ Supported devices: xteink X3, X4
 
 ## Features
 
-- Runs esptool as subprocess — same speed as command line
+- Uses esptool subprocess for backup and flash — same speed as command line
 - Standalone exe — no Python or dependencies needed
 - Auto-detect COM port, read device info
-- Supports X3 and X4 devices
+- Supports both X3 and X4 devices
 - Flash backup (1/4/8/16MB) with cancel support
 - Firmware flash (full write / OTA update / restore) with risk confirmation
-- Real-time log with progress bar
+- Real-time progress bar for both backup and flash
 - Bilingual UI (Chinese / English) with one-click toggle
 - Modern light theme
 
