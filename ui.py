@@ -79,8 +79,9 @@ LANG = {
         "warn_ota_msg": "即将 OTA 更新\n\n• 写入中请保持连接\n• 断开有变砖风险\n\n确认？",
         "warn_restore_msg": "⚠️ 恢复原厂！覆盖整个 Flash\n\n• 写入中请保持连接\n• 断开有变砖风险\n\n确认？",
         "pb_ready": "就绪",
-        "pb_connecting": "0%  -  连接...",
-        "pb_done": "100%  -  完成",
+        "pb_connecting": "连接...",
+        "pb_done": "✅ 完成",
+        "pb_done_wait": "✅ 完成，请稍等...",
         "pb_preparing": "0%  -  准备写入",
         "log_ready": "就绪。请连接设备。",
         "log_restart_tip": "拔线 → 按一下 Reset 键 → 长按电源键重启",
@@ -135,8 +136,9 @@ LANG = {
         "warn_ota_msg": "OTA Update\n\n• Keep connected during write\n• Disconnecting may brick the device\n\nConfirm?",
         "warn_restore_msg": "⚠️ Restore! Will overwrite entire Flash\n\n• Keep connected during write\n• Disconnecting may brick the device\n\nConfirm?",
         "pb_ready": "Ready",
-        "pb_connecting": "0%  -  Connecting...",
-        "pb_done": "100%  -  Done",
+        "pb_connecting": "Connecting...",
+        "pb_done": "✅ Done",
+        "pb_done_wait": "✅ Done, please wait...",
         "pb_preparing": "0%  -  Preparing",
         "log_ready": "Ready. Please connect device.",
         "log_restart_tip": "Disconnect → Press Reset → Hold power button to restart",
@@ -325,6 +327,7 @@ class App(tk.Tk):
         self.bak_pb_text = tk.Label(self.bak_frame, text=self.L["ready"],
                                       font=FONT_STATUS, bg=CARD, fg=TEXT_DIM)
         self.bak_pb_text.grid(row=2, column=0, columnspan=5, padx=12, pady=(4, 10), sticky="")
+        self.bak_start_time = None
 
         # ── Flash group ──
         self.flash_frame = ttk.Labelframe(main, text=" " + self.L["flash_group"] + " ",
@@ -378,6 +381,7 @@ class App(tk.Tk):
         self.flash_pb_text = tk.Label(self.flash_frame, text=self.L["ready"],
                                         font=FONT_STATUS, bg=CARD, fg=TEXT_DIM)
         self.flash_pb_text.grid(row=5, column=0, columnspan=5, padx=12, pady=(0, 10), sticky="")
+        self.flash_start_time = None
 
         # ── Log area ──
         self.log_text = scrolledtext.ScrolledText(main, height=8, font=FONT_LOG,
@@ -521,12 +525,14 @@ class App(tk.Tk):
 
         self.bak_cancel.clear()
         self.bak_pb_var.set(0)
-        self.bak_pb_text.config(text=self._t("pb_connecting"))
+        self.bak_pb_text.config(text=self._t("pb_connecting"), bg=CARD)
         self.bak_btn.state(["disabled"])
         self.bak_cancel_btn.state(["!disabled"])
         baud = int(self.baud_var.get())
+        self.bak_start_time = datetime.now()
 
         def run():
+            from datetime import datetime as dt
             status_map = {
                 "connecting": self.L["status_connecting"],
                 "extracting": self.L["extracting"],
@@ -536,9 +542,15 @@ class App(tk.Tk):
             }
             def progress(pct, status):
                 translated = status_map.get(status, status)
+                elapsed = dt.now() - self.bak_start_time
+                elapsed_str = f"{int(elapsed.total_seconds())//60}:{int(elapsed.total_seconds())%60:02d}"
                 self.after(0, lambda: self.bak_pb_var.set(pct))
-                self.after(0, lambda: self.bak_pb_text.config(
-                    text=f"{pct:.0f}%  -  {translated}"))
+                if pct >= 100:
+                    self.after(0, lambda: self.bak_pb_text.config(
+                        text=f"✅ {translated} ({elapsed_str})", fg="#27AE60", bg=CARD))
+                else:
+                    self.after(0, lambda: self.bak_pb_text.config(
+                        text=f"{pct:.0f}%  -  {translated}  [{elapsed_str}]", fg=TEXT_DIM, bg=CARD))
             try:
                 ok, msg = flasher.read_flash(port, baud, 0, size, path,
                                               self.bak_cancel, progress)
@@ -597,11 +609,13 @@ class App(tk.Tk):
 
         self.flash_cancel.clear()
         self.flash_pb_var.set(0)
-        self.flash_pb_text.config(text=self._t("pb_preparing"))
+        self.flash_pb_text.config(text=self._t("pb_preparing"), bg=CARD)
         self.flash_btn.state(["disabled"])
         self.flash_cancel_btn.state(["!disabled"])
+        self.flash_start_time = datetime.now()
 
         def run():
+            from datetime import datetime as dt
             status_map = {
                 "connecting": self.L["status_connecting"],
                 "extracting": self.L["extracting"],
@@ -611,9 +625,15 @@ class App(tk.Tk):
             }
             def progress(pct, status):
                 translated = status_map.get(status, status)
+                elapsed = dt.now() - self.flash_start_time
+                elapsed_str = f"{int(elapsed.total_seconds())//60}:{int(elapsed.total_seconds())%60:02d}"
                 self.after(0, lambda: self.flash_pb_var.set(pct))
-                self.after(0, lambda: self.flash_pb_text.config(
-                    text=f"{pct:.0f}%  -  {translated}"))
+                if pct >= 100:
+                    self.after(0, lambda: self.flash_pb_text.config(
+                        text=f"✅ {translated} ({elapsed_str})", fg="#27AE60", bg=CARD))
+                else:
+                    self.after(0, lambda: self.flash_pb_text.config(
+                        text=f"{pct:.0f}%  -  {translated}  [{elapsed_str}]", fg=TEXT_DIM, bg=CARD))
             try:
                 ok, msg = flasher.write_flash(port, baud, pairs,
                                                 self.flash_cancel, progress)
