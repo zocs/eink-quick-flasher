@@ -2,6 +2,7 @@
 
 ## 目录
 
+- [推荐工具](#推荐工具)
 - [前置软件安装](#前置软件安装)
 - [硬件信息](#硬件信息)
 - [固件文件说明](#固件文件说明)
@@ -16,6 +17,24 @@
 - [故障排除](#故障排除)
 
 ---
+
+## 推荐工具
+
+### EInk Quick Flasher（本仓库）⭐
+
+图形化刷机工具，无需命令行，下载即用。
+
+- 下载：[Releases](../../releases) → `EInk-Quick-Flasher.exe`
+- 功能：备份（1/4/8/16MB）、完整写入、OTA 更新、恢复原厂
+- 特点：实时进度条、中英文界面、自动检测 COM 口
+- 依赖：无（单文件 exe，内置 esptool）
+
+### 其他工具
+
+| 工具 | 说明 |
+|---|---|
+| [esptool](https://docs.espressif.com/projects/esptool/) | 命令行刷机工具，本指南后半部分详细说明 |
+| [xteink-flasher](https://xteink-flasher.vercel.app) | 网页版刷机工具，无需安装，速度较慢（约 25 分钟备份） |
 
 ## 前置软件安装
 
@@ -193,6 +212,14 @@ python -m esptool --port COM3 --baud 921600 write-flash 0x0 bootloader.bin 0x800
 
 首次刷入成功后，分区布局已变为标准格式，后续可以只更新应用固件。
 
+#### 方式零：EInk Quick Flasher（推荐）
+
+1. 打开 EInk Quick Flasher
+2. 选择串口 → 点击「读取信息」确认连接
+3. 刷入模式选择 **OTA 更新 (仅写应用)**
+4. 选择 `firmware.bin` 文件
+5. 点击「刷入」→ 确认弹窗 → 等待完成
+
 #### 方式一：esptool 命令行
 
 ```powershell
@@ -213,6 +240,16 @@ python -m esptool --port COM3 --baud 921600 write-flash 0x10000 firmware.bin
 ### 恢复原厂固件
 
 > ⚠️ 恢复原厂会**覆盖整个 Flash**（16MB），包括分区布局。CrossPoint 的分区表会被原厂布局替换。
+
+#### 方式零：EInk Quick Flasher（推荐）
+
+1. 打开 EInk Quick Flasher
+2. 选择串口 → 点击「读取信息」确认连接
+3. 刷入模式选择 **恢复原厂 (从备份文件)**
+4. 选择备份文件（如 `x3_cn_v5.2.13_full.bin`）
+5. 点击「刷入」→ 确认弹窗 → 等待完成
+
+#### 方式一：esptool 命令行
 
 ```powershell
 python -m esptool --port COM3 --baud 921600 write-flash 0x0 "./x3_backup.bin"
@@ -434,7 +471,14 @@ pio run -e default
 | `-t upload` | 编译并直接上传到设备（需连接） |
 | `-v` | 显示详细编译日志 |
 
----|---|---|
+### 字体转换工具
+
+```powershell
+python generate_epdfont.py <输入字体> <输出文件> [字号]
+```
+
+| 参数 | 说明 | 示例 |
+|---|---|---|
 | `<输入字体>` | TTF/OTF 字体文件路径 | `"C:\fonts\NotoSansSC.ttf"` |
 | `<输出文件>` | 输出 .epdfont 文件名 | `"NotoSansSC-14.epdfont"` |
 | `[字号]` | 可选，默认 14 | `14`、`16`、`18` |
