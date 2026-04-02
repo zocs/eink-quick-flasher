@@ -4,6 +4,12 @@ import sys
 import os
 from threading import Thread, Event
 
+# ── Hide console window on Windows ──────────────────────────────
+if sys.platform == "win32":
+    _CREATE_NO_WINDOW = subprocess.CREATE_NO_WINDOW
+else:
+    _CREATE_NO_WINDOW = 0
+
 def _get_python_executable():
     """Get the correct Python executable, handling PyInstaller bundles."""
     if getattr(sys, 'frozen', False):
@@ -11,7 +17,7 @@ def _get_python_executable():
         # Try to find system python or use esptool directly
         for candidate in ['python', 'python3', 'py']:
             try:
-                r = subprocess.run([candidate, '--version'], capture_output=True, timeout=3)
+                r = subprocess.run([candidate, '--version'], capture_output=True, timeout=3, creationflags=_CREATE_NO_WINDOW)
                 if r.returncode == 0:
                     return candidate
             except (FileNotFoundError, subprocess.TimeoutExpired):
@@ -38,7 +44,7 @@ def list_ports():
 def get_flash_info(port):
     try:
         r = subprocess.run(_build_esptool_cmd(["--port", port, "--after", "no-reset", "flash-id"]),
-                          capture_output=True, text=True, timeout=15)
+                          capture_output=True, text=True, timeout=15, creationflags=_CREATE_NO_WINDOW)
         return {"output": r.stdout + r.stderr, "error": None if r.returncode == 0 else r.stderr}
     except subprocess.TimeoutExpired:
         return {"output": "", "error": "timeout"}
@@ -54,7 +60,7 @@ def _parse_progress(line):
     return None
 
 def _run_with_progress(cmd, cancel_event, progress_callback, status_label):
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1, creationflags=_CREATE_NO_WINDOW)
     done = Event()
 
     def read_stream(stream):
