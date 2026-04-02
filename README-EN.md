@@ -75,6 +75,7 @@ python main.py
 ## Related
 
 - [CrossPoint Reader](https://github.com/crosspoint-reader/crosspoint-reader) — Open-source e-reader firmware
+- [CrossPoint Reader (X3 beta)](https://github.com/itsthisjustin/crosspoint-reader) — X3 port by itsthisjustin (testing)
 - [crosspoint-chinesetype](https://github.com/icannotttt/crosspoint-chinesetype) — Chinese localization for CrossPoint
 - [xteink-flasher](https://github.com/crosspoint-reader/xteink-flasher) — Web-based flasher
 
