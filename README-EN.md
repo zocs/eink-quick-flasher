@@ -27,7 +27,7 @@ Download `EInk-Quick-Flasher.exe` from [Releases](../../releases). No installati
 ### Connection
 
 - **X3**: Hold power button → connect magnetic pogo cable → COM port detected
-- **X4**: Connect USB-C cable → COM port detected
+- **X4**: Hold power button → connect USB-C cable → COM port detected
 
 ### Backup
 
