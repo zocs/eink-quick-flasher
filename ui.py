@@ -84,6 +84,8 @@ LANG = {
         "pb_preparing": "0%  -  准备写入",
         "log_ready": "就绪。请连接设备。",
         "log_restart_tip": "拔线 → 按一下 Reset 键 → 长按电源键重启",
+        "bak_success": "✅ 备份完成！{msg}\n→ 拔线 → 按一下 Reset 键 → 长按电源键重启",
+        "flash_success": "✅ 刷入完成！\n→ 拔线 → 按一下 Reset 键 → 长按电源键重启",
         "writing_status": "写入中 · 请保持连接",
         "lang_btn": "EN",
     },
@@ -138,6 +140,8 @@ LANG = {
         "pb_preparing": "0%  -  Preparing",
         "log_ready": "Ready. Please connect device.",
         "log_restart_tip": "Disconnect → Press Reset → Hold power button to restart",
+        "bak_success": "✅ Backup complete! {msg}\n→ Disconnect → Press Reset → Hold power button to restart",
+        "flash_success": "✅ Flash complete!\n→ Disconnect → Press Reset → Hold power button to restart",
         "writing_status": "Writing · Keep connected",
         "lang_btn": "中文",
     },
@@ -550,10 +554,10 @@ class App(tk.Tk):
         self.bak_cancel_btn.state(["disabled"])
         self.bak_pb_text.config(text=self._t("pb_done") if ok else msg)
         self.bak_pb_var.set(100 if ok else 0)
-        icon = "✅" if ok else "❌"
-        self._log(f"{icon} {msg}")
         if ok:
-            self._log(self._t("log_restart_tip"))
+            self._log(self._t("bak_success").format(msg=msg))
+        else:
+            self._log(f"❌ {msg}")
 
     # ── Flash ──────────────────────────────────────────────────
     def _start_flash(self):
@@ -632,10 +636,10 @@ class App(tk.Tk):
         self.flash_cancel_btn.state(["disabled"])
         self.flash_pb_text.config(text=self._t("pb_done") if ok else msg)
         self.flash_pb_var.set(100 if ok else 0)
-        icon = "✅" if ok else "❌"
-        self._log(f"{icon} {msg}")
         if ok:
-            self._log(self._t("log_restart_tip"))
+            self._log(self._t("flash_success"))
+        else:
+            self._log(f"❌ {msg}")
 
 
 def main():
