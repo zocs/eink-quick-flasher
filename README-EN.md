@@ -8,7 +8,7 @@ Supported devices: xteink X3, X4
 
 ## Features
 
-- Direct esptool integration — same speed as command line
+- Runs esptool as subprocess — same speed as command line
 - Standalone exe — no Python or dependencies needed
 - Auto-detect COM port, read device info
 - Supports X3 and X4 devices
