@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pyqt5 pyserial esptool pyinstaller
+          pip install pyserial esptool pyinstaller
 
       - name: Build exe
         run: |
