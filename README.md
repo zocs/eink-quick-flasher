@@ -39,7 +39,7 @@ ESP32-C3 墨水屏阅读器备份与刷机工具 | E-Ink Reader Backup & Flash T
 
 - **完整写入**：bootloader.bin、partitions.bin、firmware.bin 需在同一目录，选择 firmware.bin 自动检测
 - **OTA 更新**：仅更新应用分区，选择 firmware.bin
-- **恢复原厂**：选择完整备份文件
+- **恢复原厂**：选择完整备份文件。本仓库 `firmware/` 目录提供官方固件备份（x3_cn_v5.2.13_stock.bin / x3_en_v5.2.13_stock.bin / x3_en_v1.0.7_stock.bin）
 
 ## X3 / X4 分区表
 
