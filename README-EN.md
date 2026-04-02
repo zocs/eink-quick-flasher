@@ -6,6 +6,8 @@ Supported devices: xteink X3, X4
 
 [中文](README.md) | [📖 Guide](X3-FLASHER-GUIDE.md)
 
+<img src="screenshots/eink-quick-flasher-en.png" width="520">
+
 ## Features
 
 - Runs esptool as subprocess — same speed as command line

@@ -6,6 +6,8 @@ ESP32-C3 墨水屏阅读器快速备份与刷机工具
 
 [English](README-EN.md) | [📖 刷机指南](X3-FLASHER-GUIDE.md)
 
+<img src="screenshots/eink-quick-flasher-cn.png" width="520">
+
 ## 特点
 
 - 🚀 调用 esptool 子进程，备份刷机速度与命令行一致
