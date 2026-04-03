@@ -26,14 +26,20 @@ jobs:
         run: |
           pyinstaller --onefile --windowed --name "EInk-Quick-Flasher" --hidden-import esptool --hidden-import serial --collect-all esptool main.py
 
+      - name: Rename with version
+        shell: bash
+        run: |
+          VER="${GITHUB_REF#refs/tags/v}"
+          mv dist/EInk-Quick-Flasher.exe "dist/EInk-Quick-Flasher-v${VER}.exe"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: EInk-Quick-Flasher
-          path: dist/EInk-Quick-Flasher.exe
+          path: dist/EInk-Quick-Flasher-v*.exe
 
       - name: Create Release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/EInk-Quick-Flasher.exe
+          files: dist/EInk-Quick-Flasher-v*.exe
