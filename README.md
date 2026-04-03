@@ -4,7 +4,7 @@ ESP32-C3 墨水屏阅读器快速备份与刷机工具
 
 支持设备：xteink 阅星瞳 X3、X4
 
-[English](README-EN.md) | [📖 刷机指南 中文](X3-FLASHER-GUIDE.md) | [📖 Flash Guide English](X3-FLASHER-GUIDE-EN.md)
+[📖 刷机指南 中文](X3-FLASHER-GUIDE.md) | [English](README-EN.md) | [📖 Flash Guide English](X3-FLASHER-GUIDE-EN.md)
 
 <img src="screenshots/eink-quick-flasher-cn.png" width="520">
 
