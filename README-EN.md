@@ -70,6 +70,13 @@ First-time CrossPoint flash requires full write (bootloader + partition table + 
 
 `_ota` files are official OTA firmware (~6MB) containing app partition only. Requires original partition table (device must be running official firmware).
 
+### CrossPoint X3 Alpha
+
+This repo also includes pre-compiled CrossPoint firmware for X3 in `firmware/crosspoint-x3-aleph/`. Built from the [itsthisjustin/crosspoint-reader](https://github.com/itsthisjustin/crosspoint-reader) (x3-support branch).
+
+- bootloader.bin, partitions.bin, firmware.bin
+- Can be flashed via "Full Write" mode in this tool.
+
 ## Build from source
 
 ```powershell
