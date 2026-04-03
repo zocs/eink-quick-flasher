@@ -92,6 +92,12 @@ def _run_esptool_in_thread(args, cancel_event, progress_callback, status_label):
         return False, "cancelled"
 
     ok = (code == 0)
+    # Force 100% + done status on success, since esptool's progress
+    # may stop at ~90% when it switches to verification/cleanup
+    if progress_callback:
+        if ok:
+            progress_callback(100, "done")
+
     if not ok:
         return False, f"failed (code {code})\n{output.strip()}"
     return True, output.strip()
