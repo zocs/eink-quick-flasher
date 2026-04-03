@@ -20,6 +20,8 @@ Supported devices: xteink X3, X4
 - Bilingual UI (Chinese / English) with one-click toggle
 - Modern light theme
 
+> ⚠️ **X4 Support Note**: After analyzing the X4 firmware with binwalk, its partition layout is fully compatible with esptool, so X4 backup/flash should work in theory. Testing has only been done on X3; X4 has not been verified with actual hardware. X4 users — feedback welcome!
+
 ## Usage
 
 Download `EInk-Quick-Flasher.exe` from [Releases](../../releases). No installation needed.
@@ -84,7 +86,7 @@ python main.py
 
 ## Disclaimer
 
-This tool is for educational and personal use only. Non-profit, shared free of charge for user convenience. Flashing firmware carries risks. Users bear all consequences. The developer is not responsible for any damage.
+This tool is for educational research and personal use only, shared freely for user convenience. Flashing firmware carries inherent risks including but not limited to device failure, data loss, or abnormal hardware behavior. Users assume all risks and bear full responsibility for any consequences. The developer is not liable for any direct or indirect damages resulting from the use of this tool, and reserves the right to modify or discontinue it at any time.
 
 ## License
 
