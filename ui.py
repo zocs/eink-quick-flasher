@@ -568,7 +568,9 @@ class App(tk.Tk):
         if ok:
             self._log(self._t("bak_success").format(msg=msg))
         else:
-            self.bak_pb_text.config(text=f"❌ {msg}")
+            # Keep progress label short, dump full error to log area
+            short_msg = "❌ " + msg.splitlines()[0]
+            self.bak_pb_text.config(text=short_msg, fg=ACCENT)
             self._log(f"❌ {msg}")
 
     # ── Flash ──────────────────────────────────────────────────
@@ -658,7 +660,9 @@ class App(tk.Tk):
         if ok:
             self._log(self._t("flash_success"))
         else:
-            self.flash_pb_text.config(text=f"❌ {msg}")
+            # Keep progress label short, dump full error to log area
+            short_msg = "❌ " + msg.splitlines()[0]
+            self.flash_pb_text.config(text=short_msg, fg=ACCENT)
             self._log(f"❌ {msg}")
 
 
