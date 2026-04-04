@@ -1,11 +1,26 @@
 """EInk Quick Flasher - tkinter GUI with bilingual support"""
 import os
+import locale
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox, scrolledtext
 from datetime import datetime
 from threading import Event, Thread
 
 import flasher
+
+
+# ── Auto-detect Windows UI language ───────────────────────────
+def _detect_language():
+    """简体中文、繁体中文 → zh，其余 → en"""
+    try:
+        import ctypes
+        # GetUserDefaultUILanguage returns LANGID, mask to get primary lang ID
+        lang_id = ctypes.windll.kernel32.GetUserDefaultUILanguage() & 0x3FF
+        if lang_id == 0x04:  # LANG_CHINESE
+            return "zh"
+    except Exception:
+        pass
+    return "en"
 
 # ── Color palette ──────────────────────────────────────────────
 BG = "#F5F5F5"
@@ -153,7 +168,7 @@ LANG = {
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.lang = "zh"
+        self.lang = _detect_language()
         self.L = LANG[self.lang]
         self.title("EInk Quick Flasher")
         self.configure(bg=BG)
